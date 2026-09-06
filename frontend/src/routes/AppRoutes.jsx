@@ -1,19 +1,27 @@
-import {Routes,Route} from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import Login from "../pages/Auth/Login"
 import Register from "../pages/Auth/Register"
 import Home from '../pages/Home/Home'
+import { Toaster } from 'react-hot-toast'
+import Profile from '../pages/Profile/Profile'
+
 const AppRoutes = () => {
   return (
     <>
-        <Routes>
+      <Toaster position="top-right" reverseOrder={false} />
+
+      <Routes>
 
         <Route path='/' element={<Home />} />
+        <Route path='/home' element={<Home />} />
 
         <Route path='/login' element={<Login />} />
 
-        <Route path='/register' element={<Register />}/>
+        <Route path='/register' element={<Register />} />
 
-        </Routes>
+        <Route path='/profile' element={<Profile />}/>
+
+      </Routes>
     </>
   )
 }

@@ -1,15 +1,41 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { IoEyeSharp } from "react-icons/io5";
 import { FaEyeSlash } from "react-icons/fa6";
-
+import { loginUser } from '../../api/auth.api';
+import { toast } from 'react-hot-toast';
+import { AuthContext } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [islogin, setIslogin] = useState(false)
 
-  const handleSubmit = (e) => {
+  const {setUser}  =useContext(AuthContext);
+
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIslogin(true)
     // Handle login API integration
+    const data = {
+      email,
+      password
+    }
+    try {
+      
+      const response = await loginUser(data);
+      setUser(response.student);
+      toast.success('Login Successfull');
+      navigate('/home');
+    } catch (error) {
+      const message = error.response?.data?.error || 'Something went wrong. Please try again.';
+      toast.error(message)
+      
+    } finally{
+      setIslogin(false)
+    }
   };
 
   return (
@@ -105,9 +131,10 @@ export default function Login() {
 
           <button
             type="submit"
+            disabled={islogin}
             className="w-full py-2.5 px-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow-sm transition-colors duration-200"
           >
-            Sign in
+            { !islogin ? "Sign in" : "please wait" }
           </button>
         </form>
 

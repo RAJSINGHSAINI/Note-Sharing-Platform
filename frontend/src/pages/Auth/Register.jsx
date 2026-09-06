@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { IoEyeSharp } from "react-icons/io5";
 import { FaEyeSlash } from "react-icons/fa6";
+import {registerUser} from '../../api/auth.api.js'
+
 export default function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -10,7 +12,17 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle registration API integration
-    
+
+    const data = {
+      name,
+      email,
+      password
+    }
+
+    const response = registerUser(data);
+
+    console.log(response)
+           
   };
 
   return (
