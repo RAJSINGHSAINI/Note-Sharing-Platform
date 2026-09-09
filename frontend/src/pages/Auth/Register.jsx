@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { IoEyeSharp } from "react-icons/io5";
 import { FaEyeSlash } from "react-icons/fa6";
-import {registerUser} from '../../api/auth.api.js'
-
+import { registerUser } from '../../api/auth.api.js'
+import { ImSpinner2 } from 'react-icons/im';
+import toast from 'react-hot-toast';
+import { AuthContext } from '../../context/AuthContext.jsx';
+import { useNavigate } from 'react-router-dom';
 export default function Register() {
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e) => {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const {setUser} = useContext(AuthContext)
+
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Handle registration API integration
 
@@ -18,16 +28,27 @@ export default function Register() {
       email,
       password
     }
+    setIsLoading(true)
 
-    const response = registerUser(data);
-
-    console.log(response)
-           
+    try {
+      const response = await registerUser(data);
+      setUser(response.student);
+      toast.success("Registration successful");
+      navigate('/home');
+      console.log(response);
+      
+    } catch (error) {
+      const message = error.response?.data?.error || "Something went wrong!"
+      toast.error(message);
+      console.log(error.response);
+    } finally {
+      setIsLoading(false)
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-200 flex items-center justify-center  font-sans text-gray-900">
-      <div className="w-full border-2 border-gray-300 shadow-2xl p-3 bg-white rounded-3xl max-w-sm flex flex-col items-center">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center font-sans text-gray-900">
+      <div className="w-full border-2bg-white py-8 px-4 shadow-sm border border-gray-200 sm:rounded-2xl max-w-sm flex flex-col items-center">
 
         {/* Logo Icon */}
         <div className="mb-6">
@@ -124,13 +145,13 @@ export default function Register() {
               </button>
             </div>
           </div>
-
-          <button
-            type="submit"
-            className="w-full py-2.5 px-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow-sm transition-colors duration-200"
-          >
-            Get started
-          </button>
+                    
+            <button
+              type="submit"
+              className="w-full flex justify-center items-center py-2.5 px-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow-sm transition-colors duration-200"
+            >
+              {isLoading ? <ImSpinner2 className="animate-spin text-xl" /> : "Get started"}
+            </button>
         </form>
 
         <p className="mt-8 text-sm text-gray-600">

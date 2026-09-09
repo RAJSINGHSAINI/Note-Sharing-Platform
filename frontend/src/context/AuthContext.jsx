@@ -1,37 +1,35 @@
-import { createContext, useContext, useEffect, useState } from 'react'
-import { getCurrentUser } from '../api/auth.api';
+// context/AuthContext.jsx
+import React, { createContext, useState, useEffect } from 'react';
+import { getCurrentUser } from '../api/auth.api.js';
 
 export const AuthContext = createContext();
 
-const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  
+  const [loading, setLoading] = useState(true);
 
-    const [user, setUser] = useState(null)
-    const [loading, setLoading] = useState(false)
-
-    useEffect(() => {
-        async function getUser(){
-            const data = await getCurrentUser();
-            if(data.student){
-                setUser(data.student);
-            }
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const data = await getCurrentUser();
+        if (data?.student) {
+          setUser(data.student);
         }
-        getUser();
-    }, []);
+      } catch (error) {
+        console.error("Session restore failed:", error);
+        setUser(null);
+      } finally {
+        setLoading(false); 
+      }
+    }
 
-    return (
-        <AuthContext.Provider
-            value={
-                {
-                    user,
-                    setUser,
-                    loading,
-                    setLoading
-                }
-            }
-        >
-            {children}
-        </AuthContext.Provider>
-    )
-}
+    fetchUser();
+  }, []);
 
-export default AuthProvider
+  return (
+    <AuthContext.Provider value={{ user, setUser, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};

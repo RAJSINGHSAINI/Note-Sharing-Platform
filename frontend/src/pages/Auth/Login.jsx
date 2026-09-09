@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { IoEyeSharp } from "react-icons/io5";
 import { FaEyeSlash } from "react-icons/fa6";
 import { loginUser } from '../../api/auth.api';
+import { ImSpinner2 } from 'react-icons/im';
 import { toast } from 'react-hot-toast';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -39,8 +40,8 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-200 flex items-center justify-center font-sans text-gray-900">
-      <div className="w-full border-2 border-gray-300 shadow-2xl p-3 bg-white rounded-3xl max-w-sm flex flex-col items-center">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center font-sans text-gray-900">
+      <div className="w-full border-2bg-white py-8 px-4 shadow-sm border border-gray-200 sm:rounded-2xl max-w-sm flex flex-col items-center">
 
         {/* Logo Icon */}
         <div className="mb-6">
@@ -132,9 +133,9 @@ export default function Login() {
           <button
             type="submit"
             disabled={islogin}
-            className="w-full py-2.5 px-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow-sm transition-colors duration-200"
+            className="w-full py-2.5 px-4 flex justify-center items-center bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow-sm transition-colors duration-200"
           >
-            { !islogin ? "Sign in" : "please wait" }
+            { !islogin ? "Sign in" :  <ImSpinner2 className="animate-spin text-xl" />}
           </button>
         </form>
 

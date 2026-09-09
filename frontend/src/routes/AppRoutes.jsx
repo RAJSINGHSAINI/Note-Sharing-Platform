@@ -4,7 +4,9 @@ import Register from "../pages/Auth/Register"
 import Home from '../pages/Home/Home'
 import { Toaster } from 'react-hot-toast'
 import Profile from '../pages/Profile/Profile'
-
+import EmailVerification from '../pages/Auth/EmailVerification'
+import ForgotPassword from '../pages/Auth/ForgotPassword'
+import UploadNote from '../pages/Notes/UploadNote'
 const AppRoutes = () => {
   return (
     <>
@@ -20,6 +22,13 @@ const AppRoutes = () => {
         <Route path='/register' element={<Register />} />
 
         <Route path='/profile' element={<Profile />}/>
+
+        <Route path='/verify-email' element={<EmailVerification />}/>
+
+        <Route path='/forgot-password' element={<ForgotPassword />}/>
+
+        <Route path='/upload-notes' element={<UploadNote />}/>
+
 
       </Routes>
     </>

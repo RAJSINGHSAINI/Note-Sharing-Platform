@@ -1,14 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { AuthContext } from '../../context/AuthContext.jsx'; // Update path to your context
-import { getCurrentUser,updateProfile } from '../../api/auth.api.js'; // Update path to your API file
-import { 
-  User, 
-  Mail, 
-  CheckCircle2, 
-  AlertCircle, 
-  Edit2, 
-  Save, 
-  X, 
+import { AuthContext } from '../../context/AuthContext.jsx'; 
+import { getCurrentUser, updateProfile } from '../../api/auth.api.js';
+import {
+  User,
+  Mail,
+  CheckCircle2,
+  AlertCircle,
+  Edit2,
+  Save,
+  X,
   ShieldCheck,
   BookOpen,
   ArrowLeft
@@ -58,13 +58,15 @@ const Profile = () => {
 
     setLoading(true);
     try {
-      const updatedData = await updateProfile({ name });
+      const updatedData = await updateProfile(name);
       setUser((prev) => ({ ...prev, name: updatedData.student.name }));
       toast.success('Profile updated successfully!');
       setIsEditing(false);
     } catch (error) {
       const message = error.response?.data?.error || 'Failed to update profile.';
       toast.error(message);
+      console.log(error.response);
+
     } finally {
       setLoading(false);
     }
@@ -72,6 +74,7 @@ const Profile = () => {
 
   const handleVerifyEmail = () => {
     // Navigate to OTP verification page or trigger send OTP API
+    navigate('/verify-email')
     toast.success('Redirecting to OTP verification...');
   };
 
@@ -86,14 +89,14 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-3xl mx-auto space-y-6">
-        
+
         {/* Profile Header Card */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           {/* Top Decorative Banner */}
           <div className="h-32 bg-linear-to-r from-purple-600 via-indigo-600 to-purple-800 relative">
             {/* back arrow */}
             <div className='py-10 px-2 flex w-fit'>
-               <ArrowLeft onClick={()=>navigate('/home')} className='w-10 text-gray-200' /> 
+              <ArrowLeft onClick={() => navigate('/home')} className='w-10 text-gray-200' />
             </div>
           </div>
           <div className="px-6 pb-6 relative pt-0">
